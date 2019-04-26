@@ -4,8 +4,8 @@ from PyQt5 import QtWidgets
 from directory import Directory
 
 class Book(Directory):
-    def __init__(self):
-        super().__init__("BOOK", 'book')
+    def __init__(self, parent=None):
+        super().__init__("BOOK", 'book', parent=parent)
 
 
 if __name__ == '__main__':
