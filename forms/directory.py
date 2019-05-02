@@ -5,12 +5,12 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5 import  QtCore
 
 class Directory(QWidget):
-    def __init__(self, window_title, db_table, parent=None):
+    def __init__(self, window_title, db_table, hide_column=0, parent=None):
         super().__init__(parent)
         self.setWindowTitle(window_title)
         con = self.connect()
         self.stm = self.create_model(db_table)
-        self.create_ui()
+        self.create_ui(hide_column)
 
 
     def create_model(self, db_table):
@@ -22,11 +22,11 @@ class Directory(QWidget):
         stm.select()
         return stm
 
-    def create_ui(self):
+    def create_ui(self, hide_column):
         vbox = QtWidgets.QVBoxLayout()
-        tv = QtWidgets.QTableView()
-        tv.setModel(self.stm)
-        tv.hideColumn(0)
+        self.tv = QtWidgets.QTableView()
+        self.tv.setModel(self.stm)
+        self.tv.hideColumn(hide_column)
 
         btnAdd = QtWidgets.QPushButton('&Добавить запись')
         btnAdd.clicked.connect(self.addRecord)
@@ -36,7 +36,7 @@ class Directory(QWidget):
         btnSave = QtWidgets.QPushButton('&Сохранить изменения')
         btnSave.clicked.connect(self.saveRecord)
 
-        vbox.addWidget(tv)
+        vbox.addWidget(self.tv)
         vbox.addWidget(btnAdd)
         vbox.addWidget(btnDel)
         vbox.addWidget(btnSave)

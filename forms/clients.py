@@ -1,16 +1,16 @@
 import sys
 from PyQt5 import QtWidgets
 
-from directory import Directory
+from forms.directory import Directory
 
-class Book(Directory):
+class Clients(Directory):
     def __init__(self, parent=None):
-        super().__init__("BOOK", 'book', parent=parent)
+        super().__init__("CLIENTS", 'clients', parent=parent)
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    window = Directory("abstract_editor", 'book')
+    window = Clients()
 
     # print(QtSql.QSqlDatabase.drivers())
     sys.exit(app.exec())
