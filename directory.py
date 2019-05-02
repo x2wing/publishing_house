@@ -62,6 +62,7 @@ class Directory(QWidget):
 
     def connect(self):
         con = QtSql.QSqlDatabase.addDatabase("QPSQL")
+        print(QtSql.QSqlDatabase.drivers())
         con.setHostName('localhost')
         con.setPort(5432)
         con.setDatabaseName('publishing_company')
