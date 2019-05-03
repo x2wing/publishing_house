@@ -11,6 +11,7 @@ class RelDirectory(Directory):
         self.tv.doubleClicked.connect(self.fill_cell)
 
     def fill_cell(self, mi):
+
         self.stm.setData(mi, '1')
         # stm.select()
         print(mi.column())

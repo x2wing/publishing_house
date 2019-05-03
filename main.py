@@ -1,11 +1,11 @@
 import sys
 from abc import abstractmethod
 
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog
-from PyQt5.QtWidgets import QTreeWidgetItem, QTreeView, QAbstractItemView, \
-    QTableWidgetItem, QAction, QMdiArea, QMdiSubWindow, QTextEdit, QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog,\
+ QTreeWidgetItem, QTreeView, QAbstractItemView, \
+    QTableWidgetItem, QAction, QMdiArea, QMdiSubWindow, QTextEdit, QMainWindow, QTabWidget, QPushButton
 
-from book import Book
+from forms.book import Book
 
 class C_Action(QAction):
     def __init__(self, mdi:QMdiArea=None, name: str='Default', parent=None, ):
@@ -82,11 +82,19 @@ class Example(QMainWindow):
         fileMenu.addAction(Exit_action(self))
 
         directoryMenu = menubar.addMenu('&Directory')
-        directoryMenu.addAction(Book_action(self.mdi, self))
+        # directoryMenu.addAction(Book_action(self.mdi, self))
 
         reportsMenu = menubar.addMenu('&Reports')
         QueryMenu = menubar.addMenu('&Query')
 
+
+        tab = QTabWidget(self)
+        tab.setTabShape(QTabWidget.Rounded)
+        tab.setTabsClosable(True)
+        tab.addTab(QPushButton('Test'), 'Test')
+        tab.addTab(QPushButton('Test'), 'Test1')
+        tab.addTab(QPushButton('Test'), 'Test2')
+        tab.addTab(QPushButton('Test'), 'Test3')
         # self.setGeometry(300, 300, 300, 200)
         self.showFullScreen()
         self.setWindowTitle('Menubar')
