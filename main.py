@@ -2,8 +2,8 @@ import sys
 from abc import abstractmethod
 
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog,\
- QTreeWidgetItem, QTreeView, QAbstractItemView, \
-    QTableWidgetItem, QAction, QMdiArea, QMdiSubWindow, QTextEdit, QMainWindow, QTabWidget, QPushButton
+	QTreeWidgetItem, QTreeView, QAbstractItemView, QWidget,\
+    QTableWidgetItem, QAction, QMdiArea, QMdiSubWindow, QTextEdit, QMainWindow, QVBoxLayout, QTabWidget
 
 from forms.book import Book
 
@@ -63,7 +63,7 @@ class Exit_action(C_Action):
         qApp.quit()
 
 
-class Example(QMainWindow):
+class Example(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -71,34 +71,47 @@ class Example(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.mdi = QMdiArea()
-        self.setCentralWidget(self.mdi)
+        # self.mdi = QMdiArea()
+        # self.setCentralWidget(self.mdi)
+        # self.statusBar()
 
-        self.statusBar()
+        self.tabs = QTabWidget(self)
+        # self.tabs.setGeometry(0,0,600,300)
+        self.tabs.tabCloseRequested.connect(self.tab_close)
+        self.tabs.setTabsClosable(True)
+        self.tabs.setTabShape(QTabWidget.Rounded)
 
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('&File')
-        fileMenu.addAction(Open_action(self))
-        fileMenu.addAction(Exit_action(self))
+        for i in range(10):
+        	self.tabs.addTab(QWidget(), f'tab{i}')
 
-        directoryMenu = menubar.addMenu('&Directory')
+
+        # menubar = self.menuBar()
+        # fileMenu = menubar.addMenu('&File')
+        # fileMenu.addAction(Open_action(self))
+        # fileMenu.addAction(Exit_action(self))
+
+        # directoryMenu = menubar.addMenu('&Directory')
         # directoryMenu.addAction(Book_action(self.mdi, self))
 
-        reportsMenu = menubar.addMenu('&Reports')
-        QueryMenu = menubar.addMenu('&Query')
+        # reportsMenu = menubar.addMenu('&Reports')
+        # QueryMenu = menubar.addMenu('&Query')
 
-
-        tab = QTabWidget(self)
-        tab.setTabShape(QTabWidget.Rounded)
-        tab.setTabsClosable(True)
-        tab.addTab(QPushButton('Test'), 'Test')
-        tab.addTab(QPushButton('Test'), 'Test1')
-        tab.addTab(QPushButton('Test'), 'Test2')
-        tab.addTab(QPushButton('Test'), 'Test3')
         # self.setGeometry(300, 300, 300, 200)
-        self.showFullScreen()
+        # self.showFullScreen()
+
+        self.showMaximized()
         self.setWindowTitle('Menubar')
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.tabs)
+
+        self.setLayout(vbox)
         self.show()
+
+    def tab_close(self, p):
+    	print(self.tabs.widget(p).name)
+    	self.tabs.removeTab(p)
+
 
 
 if __name__ == '__main__':
