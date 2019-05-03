@@ -1,7 +1,10 @@
 import sqlalchemy as sa
 import pandas as pd
+import os
+import subprocess
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 # engine = create_engine('sqlite:///:memory:', echo=True)
 engine = create_engine('postgresql+psycopg2://postgres:1@localhost/publishing_company', echo=True)
 pool_recycle = 7200
@@ -32,9 +35,13 @@ df = pd.read_sql_query(ourUser.statement, engine)
 # 	'client_last_name':"Фамилия",
 # 	'client_middle_name':"Отчество",
 # 	'client_phone_number':"Номер телефона"})
-df.columns=['идентификатор','Имя','Фамилия','Отчество','Номер телефона']
+# df.columns=['идентификатор','Имя','Фамилия','Отчество','Номер телефона']
 print(df)
-df.to_excel('o.xlsx')
+df.to_excel('o.xlsx', header=['ИДЕНТИФИКАТОР','Имя','Фамилия','Отчество','Номер телефона'])
+os.system('xdg-open o.xlsx')
+# os.startfile('o.xlsx')
+# subprocess.Popen('libreoffice --calc o.xlsx', shell=True)
+
 # print('ourUser=',ourUser, 'client=', str(clients))
 # for i in ourUser:
 # 	print(i)
