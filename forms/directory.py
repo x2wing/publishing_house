@@ -35,11 +35,14 @@ class Directory(QWidget):
 
         btnSave = QtWidgets.QPushButton('&Сохранить изменения')
         btnSave.clicked.connect(self.saveRecord)
+        btnRemove = QtWidgets.QPushButton('&Удалить изменения')
+        btnRemove.clicked.connect(self.removeRecords)
 
         vbox.addWidget(self.tv)
         vbox.addWidget(btnAdd)
         vbox.addWidget(btnDel)
         vbox.addWidget(btnSave)
+        vbox.addWidget(btnRemove)
 
         self.setLayout(vbox)
         self.resize(600, 500)
@@ -59,6 +62,9 @@ class Directory(QWidget):
     def saveRecord(self):
         result = self.stm.submitAll()
         print(f'результат сохранения {result}')
+
+    def removeRecords(self):
+        self.stm.select()
 
     def connect(self):
         con = QtSql.QSqlDatabase.addDatabase("QPSQL")
