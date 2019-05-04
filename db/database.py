@@ -1,113 +1,123 @@
-from base_engine import Base, engine
+from db.base_engine import DB
 from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP, Boolean, Table
 from sqlalchemy.orm import relationship, backref
 
+db = DB()
 
-class CLASS(Base):
+
+class CLASS(db.Base):
     __tablename__ = 'class'
 
-    CLASS_ID = Column(Integer, primary_key=True)
-    CLASS = Column(String)
+    class_id = Column(Integer, primary_key=True)
+    class_name = Column(String)
 
 
-class CLIENTS(Base):
+class CLIENTS(db.Base):
     __tablename__ = 'clients'
-    CLIENT_ID = Column(Integer, primary_key=True)
-    CLIENT_NAME = Column(String)
-    CLIENT_LAST_NAME = Column(String)
-    CLIENT_MIDDLE_NAME = Column(String)
-    CLIENT_PHONE_NUMBER = Column(String)
+
+    client_id = Column(Integer, primary_key=True)
+    client_name = Column(String)
+    client_last_name = Column(String)
+    client_middle_name = Column(String)
+    client_phone_number = Column(String)
 
 
-class SHOPS(Base):
+class SHOPS(db.Base):
     __tablename__ = 'shops'
 
-    SHOP_ID = Column(Integer, primary_key=True)
-    SHOP_NAME = Column(String)
-    SHOP_ADDRESS = Column(String)
+    shop_id = Column(Integer, primary_key=True)
+    shop_name = Column(String)
+    shop_address = Column(String)
 
 
-class PROVIDER(Base):
+class PROVIDER(db.Base):
     __tablename__ = 'provider'
 
-    PROVIDER_ID = Column(Integer, primary_key=True)
-    PROVIDER_ORGANIZATION = Column(String)
-    PROVIDER_ADDRESS = Column(String)
-    PROVIDER_PHONE_NUMBER = Column(String)
+    provider_id = Column(Integer, primary_key=True)
+    provider_organization = Column(String)
+    provider_address = Column(String)
+    provider_phone_number = Column(String)
 
 
-class WORKER_INFO(Base):
+class WORKER_INFO(db.Base):
     __tablename__ = 'worker_info'
 
-    WORKER_ID = Column(Integer, primary_key=True)
-    WORKER_LAST_NAME = Column(String)
-    WORKER_NAME = Column(String)
-    WORKER_MIDDLE_NAME = Column(String)
-    WORKER_PASSPORT_SERIES = Column(String)
-    WORKER_PASSPORT_ID = Column(String)
-    WORKER_POSITION_HELD = Column(String)
-    WORKER_PLACE_OF_RESIDENT = Column(String)
+    worker_id = Column(Integer, primary_key=True)
+    worker_last_name = Column(String)
+    worker_name = Column(String)
+    worker_middle_name = Column(String)
+    worker_passport_series = Column(String)
+    worker_passport_id = Column(String)
+    worker_position_held = Column(String)
+    worker_place_of_resident = Column(String)
 
 
-class SALARY(Base):
+class SALARY(db.Base):
     __tablename__ = 'salary'
-    ID = Column(Integer, primary_key=True)
-    WORKER_ID = Column(Integer, ForeignKey('worker_info.WORKER_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    WORKER_SALARY = Column(Integer)
-    WORKER_PREMIUM = Column(Integer)
-    WORKER_PREPAID_EXPENSE = Column(Integer)
+
+    id_ = Column(Integer, primary_key=True)
+    worker_id = Column(Integer, ForeignKey('worker_info.worker_id', onupdate="CASCADE", ondelete="CASCADE"))
+    worker_salary = Column(Integer)
+    worker_premium = Column(Integer)
+    worker_prepaid_expense = Column(Integer)
 
     worker_info = relationship("WORKER_INFO",
-                               backref=backref("salary", uselist=False),
-                               cascade="all, delete-orphan")
+                               backref=backref("salary", uselist=False),)
 
 
-class SUPPLY(Base):
+class SUPPLY(db.Base):
     __tablename__ = 'supply'
-    ID = Column(Integer, primary_key=True)
-    PROVIDER_ID = Column(Integer, ForeignKey('provider.PROVIDER_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    SUPPLY_DATE_AND_TIME = Column(TIMESTAMP)
+
+    id_ = Column(Integer, primary_key=True)
+    provider_id = Column(Integer, ForeignKey('provider.provider_id', onupdate="CASCADE", ondelete="CASCADE"))
+    supply_date_and_time = Column(TIMESTAMP)
     provider = relationship("PROVIDER",
                             backref="supply", )
 
 
-association_table = Table('production', Base.metadata,
-                          Column('BOOK_IDENTIFIER', Integer,
-                                 ForeignKey('book.BOOK_IDENTIFIER', onupdate="CASCADE", ondelete="CASCADE")),
-                          Column('ORDER_ID', Integer,
-                                 ForeignKey('order_of_books.ORDER_ID', onupdate="CASCADE", ondelete="CASCADE"))
+association_table = Table('production', db.Base.metadata,
+                          Column('book_identifier', Integer,
+                                 ForeignKey('book.book_identifier', onupdate="CASCADE", ondelete="CASCADE")),
+                          Column('order_id', Integer,
+                                 ForeignKey('order_of_books.order_id', onupdate="CASCADE", ondelete="CASCADE"))
                           )
 
 
-class BOOK(Base):
+class BOOK(db.Base):
     __tablename__ = 'book'
-    BOOK_IDENTIFIER = Column(Integer, primary_key=True)
-    NAME_OF_BOOK = Column(String)
-    AUTHOR_OF_BOOK = Column(String)
-    QUANTITY_OF_PAGES = Column(Integer)
-    QUANTITY_OF_COPYES = Column(Integer)
-    PRICE_OF_BOOK = Column(Integer)
+
+    book_identifier = Column(Integer, primary_key=True)
+    name_of_book = Column(String)
+    author_of_book = Column(String)
+    quantity_of_pages = Column(Integer)
+    quantity_of_copyes = Column(Integer)
+    price_of_book = Column(Integer)
 
     order_of_books = relationship("ORDER_OF_BOOKS",
                                   secondary=association_table, )
 
 
-class ORDER_OF_BOOKS(Base):
+class ORDER_OF_BOOKS(db.Base):
     __tablename__ = 'order_of_books'
-    ORDER_ID = Column(Integer, primary_key=True)
-    PROVIDER_ID = Column(Integer, ForeignKey('provider.PROVIDER_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    SHOP_ID = Column(Integer, ForeignKey('shops.SHOP_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    CLIENT_ID = Column(Integer, ForeignKey('clients.CLIENT_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    DATE_OF_ORDER = Column(TIMESTAMP)
-    SUMM_OF_PREPAYMENT = Column(Integer)
-    DATE_OF_COMPLETION = Column(TIMESTAMP)
-    WORKER_ID = Column(Integer, ForeignKey('worker_info.WORKER_ID', onupdate="CASCADE", ondelete="CASCADE"))
-    IS_ACTIVE = Column(Boolean)
-    CLASS_ID = Column(Integer, ForeignKey('class.CLASS_ID', onupdate="CASCADE", ondelete="CASCADE"))
+
+    order_id = Column(Integer, primary_key=True)
+    provider_id = Column(Integer, ForeignKey('provider.provider_id', onupdate="CASCADE", ondelete="CASCADE"))
+    shop_id = Column(Integer, ForeignKey('shops.shop_id', onupdate="CASCADE", ondelete="CASCADE"))
+    client_id = Column(Integer, ForeignKey('clients.client_id', onupdate="CASCADE", ondelete="CASCADE"))
+    date_of_order = Column(TIMESTAMP)
+    summ_of_prepayment = Column(Integer)
+    date_of_completion = Column(TIMESTAMP)
+    worker_id = Column(Integer, ForeignKey('worker_info.worker_id', onupdate="CASCADE", ondelete="CASCADE"))
+    is_active = Column(Boolean)
+    class_id = Column(Integer, ForeignKey('class.class_id', onupdate="CASCADE", ondelete="CASCADE"))
 
     book = relationship("BOOK",
                         secondary=association_table, )
 
 
 if __name__ == '__main__':
-    Base.metadata.create_all(engine)
+    for i in db.session.query(CLASS.class_name):
+        print(i[0])
+        # print({i.class_id:i.class_name})
+
+    # db.make_schema()
