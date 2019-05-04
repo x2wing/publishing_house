@@ -1,14 +1,14 @@
 import sys
-from abc import abstractmethod
 
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QFileDialog,\
-	QTreeWidgetItem, QTreeView, QAbstractItemView, QWidget,\
-    QTableWidgetItem, QAction, QMdiArea, QMdiSubWindow, QTextEdit, QMainWindow, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets import QMainWindow, qApp, QApplication, QFileDialog, \
+    QWidget, \
+    QAction, QMdiArea, QMdiSubWindow, QVBoxLayout, QTabWidget
 
 from forms.book import Book
 
+
 class C_Action(QAction):
-    def __init__(self, mdi:QMdiArea=None, name: str='Default', parent=None, ):
+    def __init__(self, mdi: QMdiArea = None, name: str = 'Default', parent=None, ):
         super(C_Action, self).__init__(name, parent)
         self.mdi = mdi
 
@@ -17,7 +17,6 @@ class C_Action(QAction):
         self.obj = obj
         self.setShortcut(shortcut)
         self.triggered.connect(self.act)
-
 
     def act(self):
         print(dir(self))
@@ -28,22 +27,16 @@ class C_Action(QAction):
         sub.show()
         print(dir(self))
 
+
 class Book_action(C_Action):
     def __init__(self, mdi, parent):
         super().__init__(mdi, '&Book', parent)
         self.set_params(shortcut='Ctrl+B', tittle='Book', obj=Book)
 
 
-
-
-
-
-
-
-
 class Open_action(C_Action):
     def __init__(self, parent):
-        super(Open_action, self).__init__( name='&Open', parent=parent)
+        super(Open_action, self).__init__(name='&Open', parent=parent)
         self.set_params(shortcut='Ctrl+O')
 
     def act(self):
@@ -54,6 +47,7 @@ class Open_action(C_Action):
         # получаем путь к файлу
         path, _ = QFileDialog.getOpenFileName(None, description, default_path, filter)
 
+
 class Exit_action(C_Action):
     def __init__(self, parent):
         super(Exit_action, self).__init__(name='&Exit', parent=parent)
@@ -63,7 +57,7 @@ class Exit_action(C_Action):
         qApp.quit()
 
 
-class Example(QWidget):
+class Example(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -74,44 +68,45 @@ class Example(QWidget):
         # self.mdi = QMdiArea()
         # self.setCentralWidget(self.mdi)
         # self.statusBar()
-
         self.tabs = QTabWidget(self)
+        self.setCentralWidget(self.tabs)
+
         # self.tabs.setGeometry(0,0,600,300)
         self.tabs.tabCloseRequested.connect(self.tab_close)
         self.tabs.setTabsClosable(True)
         self.tabs.setTabShape(QTabWidget.Rounded)
 
         for i in range(10):
-        	self.tabs.addTab(QWidget(), f'tab{i}')
+            self.tabs.addTab(QWidget(), f'tab{i}')
 
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(Open_action(self))
+        fileMenu.addAction(Exit_action(self))
 
-        # menubar = self.menuBar()
-        # fileMenu = menubar.addMenu('&File')
-        # fileMenu.addAction(Open_action(self))
-        # fileMenu.addAction(Exit_action(self))
-
-        # directoryMenu = menubar.addMenu('&Directory')
+        directoryMenu = menubar.addMenu('&Directory')
         # directoryMenu.addAction(Book_action(self.mdi, self))
 
-        # reportsMenu = menubar.addMenu('&Reports')
-        # QueryMenu = menubar.addMenu('&Query')
+        reportsMenu = menubar.addMenu('&Reports')
+        QueryMenu = menubar.addMenu('&Query')
 
         # self.setGeometry(300, 300, 300, 200)
         # self.showFullScreen()
 
-        self.showMaximized()
+
         self.setWindowTitle('Menubar')
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.tabs)
+        # vbox = QVBoxLayout()
+        # vbox.addWidget(menubar)
+        # vbox.addWidget(self.tabs)
 
-        self.setLayout(vbox)
+        # self.setLayout(vbox)
+        self.showMaximized()
         self.show()
 
     def tab_close(self, p):
-    	print(self.tabs.widget(p).name)
-    	self.tabs.removeTab(p)
-
+        print(self.tabs.widget(p))
+        self.tabs.removeTab(p)
 
 
 if __name__ == '__main__':
