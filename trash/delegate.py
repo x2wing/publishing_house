@@ -52,19 +52,19 @@ stm.setJoinMode(QtSql.QSqlRelationalTableModel.InnerJoin)
 stm.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
 stm.setTable('supply')
 stm.setSort(1, QtCore.Qt.AscendingOrder)
-stm.dataChanged.connect(dt_change)
+# stm.dataChanged.connect(dt_change)
 
 
-# stm.setRelation(0, QtSql.QSqlRelation('provider', 'provider_id', 'provider_organization'))
+stm.setRelation(1, QtSql.QSqlRelation('provider', 'provider_id', 'provider_organization'))
 
 stm.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
 stm.select()
 
 vbox = QtWidgets.QVBoxLayout()
 tv = QtWidgets.QTableView()
-tv.doubleClicked.connect(foo)
+# tv.doubleClicked.connect(foo)
 tv.setModel(stm)
-# tv.setItemDelegateForColumn(0, QtSql.QSqlRelationalDelegate(tv))
+tv.setItemDelegateForColumn(1, QtSql.QSqlRelationalDelegate(tv))
 
 btnAdd = QtWidgets.QPushButton('&Добавить запись')
 btnAdd.clicked.connect(addRecord)
