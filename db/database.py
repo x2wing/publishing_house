@@ -101,6 +101,7 @@ class ORDER_OF_BOOKS(db.Base):
     __tablename__ = 'order_of_books'
 
     order_id = Column(Integer, primary_key=True)
+    order_name = Column(String)
     provider_id = Column(Integer, ForeignKey('provider.provider_id', onupdate="CASCADE", ondelete="CASCADE"))
     shop_id = Column(Integer, ForeignKey('shops.shop_id', onupdate="CASCADE", ondelete="CASCADE"))
     client_id = Column(Integer, ForeignKey('clients.client_id', onupdate="CASCADE", ondelete="CASCADE"))
@@ -116,8 +117,8 @@ class ORDER_OF_BOOKS(db.Base):
 
 
 if __name__ == '__main__':
-    for i in db.session.query(CLASS.class_name):
-        print(i[0])
-        # print({i.class_id:i.class_name})
+    # for i in db.session.query(CLASS.class_name):
+    #     print(i[0])
+    #     # print({i.class_id:i.class_name})
 
-    # db.make_schema()
+    db.make_schema()
