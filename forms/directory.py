@@ -5,18 +5,23 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5 import  QtCore
 
 class Directory(QWidget):
-    def __init__(self, window_title, db_table, hide_column=0, parent=None):
+    def __init__(self, window_title, db_table, parent=None, sort_column=0, hide_column=0,  ):
         super().__init__(parent)
         self.setWindowTitle(window_title)
-        con = self.connect()
-        self.stm = self.create_model(db_table)
+        # нужно сначала создать виджет чтобы подцепилась модель
+        self.tv = QtWidgets.QTableView()
+
+        self.con = self.connect()
+        self.stm = self.create_model(db_table, sort_column)
         self.create_ui(hide_column)
 
 
-    def create_model(self, db_table):
-        stm = QtSql.QSqlTableModel(parent=self)
+
+    def create_model(self, db_table, sort_column):
+        stm = QtSql.QSqlTableModel()
+        # stm = QtSql.QSqlRelationalTableModel()
         stm.setTable(db_table)
-        stm.setSort(1, QtCore.Qt.AscendingOrder)
+        stm.setSort(sort_column, QtCore.Qt.AscendingOrder)
 
         stm.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
         stm.select()
@@ -24,7 +29,7 @@ class Directory(QWidget):
 
     def create_ui(self, hide_column):
         vbox = QtWidgets.QVBoxLayout()
-        self.tv = QtWidgets.QTableView()
+
         self.tv.setModel(self.stm)
         self.tv.hideColumn(hide_column)
 
