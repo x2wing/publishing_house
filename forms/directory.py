@@ -15,6 +15,9 @@ class Directory(QWidget):
         self.stm = self.create_model(db_table, sort_column)
         self.create_ui(hide_column)
 
+    @property
+    def name(self):
+        return 'Вкладка'
 
 
     def create_model(self, db_table, sort_column):
@@ -51,7 +54,7 @@ class Directory(QWidget):
 
         self.setLayout(vbox)
         self.resize(600, 500)
-        self.show()
+        # self.show()
 
     def addRecord(self):
         self.stm.insertRow(self.stm.rowCount())

@@ -7,6 +7,10 @@ class Book(Directory):
     def __init__(self, parent=None):
         super().__init__("BOOK", 'book', parent=parent)
 
+    @property
+    def name(self):
+        return 'Книги'
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
