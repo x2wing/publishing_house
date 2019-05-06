@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QMainWindow, qApp, QApplication, QFileDialog, \
 from forms import Book, Class, Clients, Provider, Shops, Worker_info
 from action import  Exit_act, Book_act, Class_act, Clients_act, Provider_act, Shops_act, Worker_info_act
 from action import  Order_of_books_act, Production_act, Salary_act, Supply_act
+from action import Order_to_worker_report, Client_and_class_report
 from trash.custom_widget import Directory
 from tabs import Tabs
 
@@ -60,6 +61,8 @@ class Example(QMainWindow):
         relationMenu.addAction(Supply_act(self, self.tabs))
 
         reportsMenu = menubar.addMenu('&Отчеты')
+        reportsMenu.addAction(Order_to_worker_report(self, self.tabs))
+        reportsMenu.addAction(Client_and_class_report(self, self.tabs))
         QueryMenu = menubar.addMenu('&Запросы')
 
         # self.setGeometry(300, 300, 300, 200)

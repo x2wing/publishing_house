@@ -10,13 +10,17 @@ from sqlalchemy.orm import sessionmaker
 
 
 class Reports():
-    def __init__(self, file_name, sa_query, columns_list):
-        self.report_name = file_name     # r'Отчет Заказы по менеджерам.xlsx'
+    def __init__(self, name, sa_query, columns_list):
+        self.__name = name
+        self.report_name = f'{name}.xlsx'     # r'Отчет Заказы по менеджерам.xlsx'
         self.request = sa_query          # sqlalchemy запрос
         self.columns_list = columns_list # ['Фамилия', 'Имя', 'Отчество', 'Название заказа', 'Дата заказа', 'Дата окончания заказа'])
         self.create()
         self.open()
 
+    @property
+    def name(self):
+        return self.__name
 
 
 

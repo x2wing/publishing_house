@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, qApp, QApplication, QFileDialog, \
 
 from forms import Book, Class, Clients, Provider, Shops, Worker_info
 from rel_forms import Order_of_books, Production, Salary, Supply
+from db import Order_to_worker, Client_and_class
 
 class C_Action(QAction):
     def __init__(self, mdi: QMdiArea = None, name: str = 'Default', parent=None, ):
@@ -98,6 +99,23 @@ class Supply_act(Action):
     def __init__(self, parent, tabs):
         super().__init__('&Поставки', parent, tabs)
         self.set_params(shortcut='Ctrl+U', cls=Supply)
+
+
+class Order_to_worker_report(Action):
+    def __init__(self, parent, tabs):
+        super().__init__('&Отчет Заказы по менеджерам', parent, tabs)
+        self.set_params(shortcut='Ctrl+Z', cls=Order_to_worker)
+
+    def act(self):
+        self.cls()
+
+class Client_and_class_report(Action):
+    def __init__(self, parent, tabs):
+        super().__init__('&Отчет Классы обслуживания клиентов', parent, tabs)
+        self.set_params(shortcut='Ctrl+E', cls=Client_and_class)
+
+    def act(self):
+        self.cls()
 
 
 # class Open_action(C_Action):
