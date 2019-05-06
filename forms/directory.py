@@ -3,13 +3,14 @@ import sys
 from PyQt5 import QtWidgets, QtSql
 from PyQt5.QtWidgets import QWidget
 from PyQt5 import  QtCore
+from PyQt5.QtGui import  QStandardItemModel
 
 class Directory(QWidget):
     def __init__(self, window_title, db_table, parent=None, sort_column=0, hide_column=0,  ):
         super().__init__(parent)
         self.setWindowTitle(window_title)
         # нужно сначала создать виджет чтобы подцепилась модель
-        self.tv = QtWidgets.QTableView()
+        self.tv = QtWidgets.QTableView(self)
 
         self.con = self.connect()
         self.stm = self.create_model(db_table, sort_column)
@@ -21,7 +22,7 @@ class Directory(QWidget):
 
 
     def create_model(self, db_table, sort_column):
-        stm = QtSql.QSqlTableModel()
+        stm = QtSql.QSqlTableModel(self)
         # stm = QtSql.QSqlRelationalTableModel()
         stm.setTable(db_table)
         stm.setSort(sort_column, QtCore.Qt.AscendingOrder)
@@ -30,10 +31,17 @@ class Directory(QWidget):
         stm.select()
         return stm
 
+    def del_model(self):
+        self.tv.setModel(QStandardItemModel(1,1))
+
+    def set_model(self):
+        self.tv.setModel(self.stm)
+        self.stm.select()
+
     def create_ui(self, hide_column):
         vbox = QtWidgets.QVBoxLayout()
 
-        self.tv.setModel(self.stm)
+        # self.tv.setModel(self.stm)
         self.tv.hideColumn(hide_column)
 
         btnAdd = QtWidgets.QPushButton('&Добавить запись')
