@@ -8,6 +8,10 @@ class Supply(RelDirectory):
     def __init__(self, parent=None):
         super().__init__("SUPPLY", 'supply', parent=parent, hide_column=0)
 
+    @property
+    def name(self):
+        return 'Поставки'
+
     def set_relation(self, stm):
         relation = [{'col':1, 'qt_rel': QtSql.QSqlRelation('provider', 'provider_id', 'provider_organization')}]
         for item in relation:

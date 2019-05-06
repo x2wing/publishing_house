@@ -9,6 +9,10 @@ class Order_of_books(RelDirectory):
     def __init__(self, parent=None):
         super().__init__("ORDER_OF_BOOKS", 'order_of_books', parent=parent)
 
+    @property
+    def name(self):
+        return 'Заказы'
+
     def set_relation(self, stm):
         relation = [{'col': 2, 'qt_rel': QtSql.QSqlRelation('provider', 'provider_id', 'provider_organization')},
                     {'col': 3, 'qt_rel': QtSql.QSqlRelation('shops', 'shop_id', 'shop_name')},
