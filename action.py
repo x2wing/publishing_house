@@ -42,7 +42,7 @@ class Action(QAction):
     def act(self):
         # print(dir(self))
         obj = self.cls()
-        self.tabs.addTab(obj, obj.name)
+        self.tabs.add_tab(obj, obj.name)
 
         # print(dir(self))
 

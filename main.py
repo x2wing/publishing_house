@@ -8,8 +8,8 @@ from PyQt5.QtWidgets import QMainWindow, qApp, QApplication, QFileDialog, \
 from forms import Book, Class, Clients, Provider, Shops, Worker_info
 from action import  Exit_act, Book_act, Class_act, Clients_act, Provider_act, Shops_act, Worker_info_act
 from action import  Order_of_books_act, Production_act, Salary_act, Supply_act
-
-
+from trash.custom_widget import Directory
+from tabs import Tabs
 
 
 class Example(QMainWindow):
@@ -23,13 +23,19 @@ class Example(QMainWindow):
         # self.mdi = QMdiArea()
         # self.setCentralWidget(self.mdi)
         # self.statusBar()
-        self.tabs = QTabWidget(self)
+        self.tabs = Tabs(self)
         self.setCentralWidget(self.tabs)
 
         # self.tabs.setGeometry(0,0,600,300)
-        self.tabs.tabCloseRequested.connect(self.tab_close)
-        self.tabs.setTabsClosable(True)
-        self.tabs.setTabShape(QTabWidget.Rounded)
+
+        # d1 = Directory('tst1', 'clients')
+        # d2 = Directory('tst1', 'salary')
+        # d3 = Directory('tst1', 'class')
+        # d4 = Directory('tst1', 'supply')
+        # self.add_tab(d1,'tab')
+        # self.add_tab(d2,'tab')
+        # self.add_tab(d3,'tab')
+        # self.add_tab(d4,'tab')
 
         # book = Book()
         # self.tabs.addTab(book, book.name)
@@ -63,11 +69,9 @@ class Example(QMainWindow):
 
 
         self.showMaximized()
-        self.show()
+        # self.show()
 
-    def tab_close(self, p):
-        print(self.tabs.widget(p))
-        self.tabs.removeTab(p)
+
 
 
 if __name__ == '__main__':
