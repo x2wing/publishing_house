@@ -112,7 +112,7 @@ class Directory(QWidget):
         con.setPort(5432)
         con.setDatabaseName('publishing_company')
         con.setUserName('postgres')
-        con.setPassword('1')
+        con.setPassword('123')
         if con.isOpen():
             con.close()
         if not con.open():

@@ -8,7 +8,7 @@ from sqlalchemy import engine_from_config
 class DB():
     def __init__(self):
         # config = {'db.url': 'postgresql+psycopg2://postgres:1@localhost/publishing_company', 'db.echo': 'True'}
-        config = {'db.url': 'postgresql+psycopg2://postgres:1@localhost/publishing_company', 'db.echo': 'True'}
+        config = {'db.url': 'postgresql+psycopg2://postgres:123@localhost/publishing_company', 'db.echo': 'True'}
 
         self.engine = engine_from_config(config, prefix='db.')
         Session = sessionmaker(bind=self.engine)
