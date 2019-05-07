@@ -43,6 +43,7 @@ class Directory(QWidget):
 
     def set_model(self):
         self.tv.setModel(self.stm)
+        self.tv.hideColumn(self.hide_column)
         self.stm.select()
 
     def create_ui(self, hide_column):
