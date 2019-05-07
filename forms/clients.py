@@ -1,7 +1,10 @@
 import sys
+
+from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 
 from forms.directory import Directory
+
 
 class Clients(Directory):
     def __init__(self, parent=None):
@@ -10,6 +13,12 @@ class Clients(Directory):
     @property
     def name(self):
         return 'Клиенты'
+
+    def set_headers(self, stm):
+        stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Имя')
+        stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Фамилия')
+        stm.setHeaderData(3, QtCore.Qt.Horizontal, 'Отчество')
+        stm.setHeaderData(4, QtCore.Qt.Horizontal, 'Номер телефона')
 
 
 if __name__ == '__main__':

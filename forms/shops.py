@@ -1,7 +1,10 @@
 import sys
+
+from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 
 from forms.directory import Directory
+
 
 class Shops(Directory):
     def __init__(self, parent=None):
@@ -10,6 +13,10 @@ class Shops(Directory):
     @property
     def name(self):
         return 'Магазины'
+
+    def set_headers(self, stm):
+        stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Название магазина')
+        stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Адресс')
 
 
 if __name__ == '__main__':

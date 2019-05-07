@@ -1,5 +1,6 @@
 import sys
 
+from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 
 from rel_forms.directory import RelDirectory
@@ -19,6 +20,12 @@ class Salary(RelDirectory):
             # 1 параметр столбец куда вешается делегат
             stm.setRelation(item['col'], item['qt_rel'])
             self.tv.setItemDelegateForColumn(item['col'], QtSql.QSqlRelationalDelegate(self.tv))
+
+    def set_headers(self, stm):
+        stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Сотрудник')
+        stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Зарплата')
+        stm.setHeaderData(3, QtCore.Qt.Horizontal, 'Премия')
+        stm.setHeaderData(4, QtCore.Qt.Horizontal, 'Аванс')
 
 
 if __name__ == '__main__':

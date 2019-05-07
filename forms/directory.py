@@ -1,32 +1,40 @@
 import sys
 
+from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
-from PyQt5.QtWidgets import QWidget, QSizePolicy
-from PyQt5 import  QtCore
-from PyQt5.QtGui import  QStandardItemModel
+from PyQt5.QtGui import QStandardItemModel
+from PyQt5.QtWidgets import QWidget
+
 from db import BOOK
+
 
 class ComboBox(QtWidgets.QComboBox):
     def __init__(self, parent):
         super().__init__(parent)
-        print('ComboBox',BOOK.__table__.columns.keys())
+        print('ComboBox',parent.sa_class.__table__.columns.keys())
+        self.addItems(parent.sa_class.__table__.columns.keys())
 
 class Directory(QWidget):
-    def __init__(self, window_title, db_table, parent=None, sort_column=0, hide_column=0,  ):
+    def __init__(self, window_title, db_table, sa_class,parent=None, sort_column=0, hide_column=0,  ):
         super().__init__(parent)
         self.hide_column = hide_column
+        self.sa_class = sa_class
+
         self.setWindowTitle(window_title)
         # нужно сначала создать виджет чтобы подцепилась модель
         self.tv = QtWidgets.QTableView(self)
 
         self.con = self.connect()
         self.stm = self.create_model(db_table, sort_column)
+        self.set_headers(self.stm)
         self.create_ui(hide_column)
 
     @property
     def name(self):
         return 'Вкладка'
 
+    def set_headers(self, stm):
+        pass
 
     def create_model(self, db_table, sort_column):
         stm = QtSql.QSqlTableModel(self)
@@ -35,6 +43,7 @@ class Directory(QWidget):
         stm.setSort(sort_column, QtCore.Qt.AscendingOrder)
 
         stm.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
+
         stm.select()
         return stm
 
@@ -50,9 +59,13 @@ class Directory(QWidget):
         vbox = QtWidgets.QVBoxLayout()
         hbox = QtWidgets.QHBoxLayout()
 
-        column= ComboBox(self)
-        condition= QtWidgets.QComboBox(self)
-        value = QtWidgets.QLineEdit(self)
+        self.column= ComboBox(self)
+        self.condition= QtWidgets.QComboBox(self)
+        self.condition.addItems(['>','<','=',])
+        self.value = QtWidgets.QLineEdit(self)
+
+        btnFilter =QtWidgets.QPushButton('Фильтровать', self)
+        btnFilter.clicked.connect(self.setFilter)
 
 
         # self.tv.setModel(self.stm)
@@ -62,16 +75,17 @@ class Directory(QWidget):
         btnAdd = QtWidgets.QPushButton('&Добавить запись')
         btnAdd.clicked.connect(self.addRecord)
         btnDel = QtWidgets.QPushButton('&Удалить запись')
-        btnDel.clicked.connect(self.setFilter)
+        btnDel.clicked.connect(self.delRecord)
 
         btnSave = QtWidgets.QPushButton('&Сохранить изменения')
         btnSave.clicked.connect(self.saveRecord)
         btnRemove = QtWidgets.QPushButton('&Удалить изменения')
-        btnRemove.clicked.connect(self.removeRecords)
+        btnRemove.clicked.connect(self.setFilter)
 
-        hbox.addWidget(column)
-        hbox.addWidget(condition)
-        hbox.addWidget(value)
+        hbox.addWidget(self.column)
+        hbox.addWidget(self.condition)
+        hbox.addWidget(self.value)
+        hbox.addWidget(btnFilter)
         vbox.addLayout(hbox)
         vbox.addWidget(self.tv)
         vbox.addWidget(btnAdd)
@@ -83,8 +97,12 @@ class Directory(QWidget):
         self.resize(600, 500)
         # self.show()
 
-    def setFilter(self, column, condition, value):
-        self.stm.setFilter('worker_id=1')
+    def setFilter(self):
+        column = self.column.currentText()
+        condition = self.condition.currentText()
+        value = self.value.text()
+        print(column, condition, value)
+        self.stm.setFilter(f'{column}{condition}{value}')
         self.stm.select()
 
     def addRecord(self):
@@ -94,16 +112,13 @@ class Directory(QWidget):
         self.stm.removeRow(self.tv.currentIndex().row())
         self.stm.select()
 
-    def setFilter(self):
-        self.stm.setFilter('worker_id=1')
-        self.stm.select()
+
 
     def saveRecord(self):
         result = self.stm.submitAll()
         print(f'результат сохранения {result}')
 
-    def removeRecords(self):
-        self.stm.select()
+
 
     def connect(self):
         con = QtSql.QSqlDatabase.addDatabase("QPSQL")
@@ -124,7 +139,7 @@ class Directory(QWidget):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    window = Directory("abstract_editor", 'book')
+    window = Directory("abstract_editor", 'book', BOOK)
     window.show()
     # print(QtSql.QSqlDatabase.drivers())
     sys.exit(app.exec())
