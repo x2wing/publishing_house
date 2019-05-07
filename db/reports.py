@@ -1,28 +1,22 @@
-from db.database import CLASS, BOOK, CLIENTS, SHOPS, PROVIDER, WORKER_INFO, SALARY, ORDER_OF_BOOKS, SUPPLY, db
-from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP, Boolean, Table
-from sqlalchemy.orm import relationship, backref
-import sqlalchemy as sa
-import pandas as pd
 import os
-import subprocess
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
+import pandas as pd
+
+from db.database import CLASS, CLIENTS, WORKER_INFO, ORDER_OF_BOOKS, db
 
 
 class Reports():
     def __init__(self, name, sa_query, columns_list):
         self.__name = name
-        self.report_name = f'{name}.xlsx'     # r'Отчет Заказы по менеджерам.xlsx'
-        self.request = sa_query          # sqlalchemy запрос
-        self.columns_list = columns_list # ['Фамилия', 'Имя', 'Отчество', 'Название заказа', 'Дата заказа', 'Дата окончания заказа'])
+        self.report_name = f'{name}.xlsx'  # r'Отчет Заказы по менеджерам.xlsx'
+        self.request = sa_query  # sqlalchemy запрос
+        self.columns_list = columns_list  # ['Фамилия', 'Имя', 'Отчество', 'Название заказа', 'Дата заказа', 'Дата окончания заказа'])
         self.create()
         self.open()
 
     @property
     def name(self):
         return self.__name
-
-
 
     def create(self):
         df = pd.read_sql_query(self.request.statement, db.engine)
@@ -42,11 +36,9 @@ class Order_to_worker(Reports):
                                    ORDER_OF_BOOKS.order_name,
                                    ORDER_OF_BOOKS.date_of_completion,
                                    ORDER_OF_BOOKS.date_of_order). \
-                                join(ORDER_OF_BOOKS)
+            join(ORDER_OF_BOOKS)
         header = ['Фамилия', 'Имя', 'Отчество', 'Название заказа', 'Дата заказа', 'Дата окончания заказа']
-        super().__init__(r'Отчет Заказы по менеджерам.xlsx', request, header)
-
-
+        super().__init__(r'Отчет Заказы по менеджерам', request, header)
 
 
 class Client_and_class(Reports):
@@ -55,10 +47,10 @@ class Client_and_class(Reports):
                                    CLIENTS.client_last_name,
                                    CLIENTS.client_name,
                                    CLIENTS.client_middle_name, ). \
-                                join(ORDER_OF_BOOKS). \
-                                join(CLIENTS)
+            join(ORDER_OF_BOOKS). \
+            join(CLIENTS)
         header = ['Класс обслуживания', 'Фамилия', 'Имя', 'Отчество']
-        super().__init__(r'Отчет Классы обслуживания клиентов.xlsx', request, header)
+        super().__init__(r'Отчет Классы обслуживания клиентов', request, header)
 
 
 if __name__ == '__main__':
