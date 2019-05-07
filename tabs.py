@@ -17,7 +17,7 @@ class Tabs(QTabWidget):
     def tab_close(self, p):
         widget = self.widget(p)
         print(widget)
-        del widget
+        # del widget
         self.removeTab(p)
         self.current_widget = self.currentWidget()
 
