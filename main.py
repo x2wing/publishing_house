@@ -1,15 +1,10 @@
 import sys
 
-from PyQt5.QtWidgets import QMainWindow, qApp, QApplication, QFileDialog, \
-    QWidget, \
-    QAction, QMdiArea, QMdiSubWindow, QTabWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
-
-from forms import Book, Class, Clients, Provider, Shops, Worker_info
-from action import  Exit_act, Book_act, Class_act, Clients_act, Provider_act, Shops_act, Worker_info_act
-from action import  Order_of_books_act, Production_act, Salary_act, Supply_act
+from action import Exit_act, Book_act, Class_act, Clients_act, Provider_act, Shops_act, Worker_info_act
+from action import Order_of_books_act, Production_act, Salary_act, Supply_act
 from action import Order_to_worker_report, Client_and_class_report
-from trash.custom_widget import Directory
 from tabs import Tabs
 
 
@@ -21,29 +16,11 @@ class Example(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        # self.mdi = QMdiArea()
-        # self.setCentralWidget(self.mdi)
-        # self.statusBar()
         self.tabs = Tabs(self)
         self.setCentralWidget(self.tabs)
 
-        # self.tabs.setGeometry(0,0,600,300)
-
-        # d1 = Directory('tst1', 'clients')
-        # d2 = Directory('tst1', 'salary')
-        # d3 = Directory('tst1', 'class')
-        # d4 = Directory('tst1', 'supply')
-        # self.add_tab(d1,'tab')
-        # self.add_tab(d2,'tab')
-        # self.add_tab(d3,'tab')
-        # self.add_tab(d4,'tab')
-
-        # book = Book()
-        # self.tabs.addTab(book, book.name)
-
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&Файл')
-        # fileMenu.addAction(Open_action(self))
         fileMenu.addAction(Exit_act(self))
 
         directoryMenu = menubar.addMenu('&Справочники')
@@ -63,18 +40,14 @@ class Example(QMainWindow):
         reportsMenu = menubar.addMenu('&Отчеты')
         reportsMenu.addAction(Order_to_worker_report(self, self.tabs))
         reportsMenu.addAction(Client_and_class_report(self, self.tabs))
-        QueryMenu = menubar.addMenu('&Запросы')
+        # QueryMenu = menubar.addMenu('&Запросы')
 
-        # self.setGeometry(300, 300, 300, 200)
         # self.showFullScreen()
 
         self.setWindowTitle('База данных книготорговой организация')
 
-
         self.showMaximized()
         # self.show()
-
-
 
 
 if __name__ == '__main__':
