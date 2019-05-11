@@ -6,7 +6,7 @@ from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import QWidget
 from sqlalchemy import Table
 
-from db import BOOK
+from db import BOOK, conf
 
 
 class ComboBox(QtWidgets.QComboBox):
@@ -121,11 +121,11 @@ class Directory(QWidget):
     def connect(self):
         con = QtSql.QSqlDatabase.addDatabase("QPSQL")
         print(QtSql.QSqlDatabase.drivers())
-        con.setHostName('localhost')
-        con.setPort(5432)
-        con.setDatabaseName('publishing_company')
-        con.setUserName('postgres')
-        con.setPassword('123')
+        con.setHostName(conf.hostname)
+        con.setPort(int(conf.port))
+        con.setDatabaseName(conf.database)
+        con.setUserName(conf.user)
+        con.setPassword(conf.password)
         if con.isOpen():
             con.close()
         if not con.open():
