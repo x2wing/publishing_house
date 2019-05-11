@@ -8,7 +8,7 @@ from db import ORDER_OF_BOOKS
 
 class Order_of_books(RelDirectory):
     def __init__(self, parent=None):
-        super().__init__("ORDER_OF_BOOKS", 'order_of_books', sa_class=ORDER_OF_BOOKS, parent=parent)
+        super().__init__("ORDER_OF_BOOKS", 'order_of_books', sa_class=ORDER_OF_BOOKS, parent=parent, hide_column=0)
 
     @property
     def name(self):
@@ -31,11 +31,11 @@ class Order_of_books(RelDirectory):
         stm.setHeaderData(3, QtCore.Qt.Horizontal, 'Магазин')
         stm.setHeaderData(4, QtCore.Qt.Horizontal, 'Клиент')
         stm.setHeaderData(5, QtCore.Qt.Horizontal, 'Дата заказа')
-        stm.setHeaderData(7, QtCore.Qt.Horizontal, 'Сумма предоплаты')
-        stm.setHeaderData(8, QtCore.Qt.Horizontal, 'Дата завершения заказа')
-        stm.setHeaderData(9, QtCore.Qt.Horizontal, 'Сотрудник, создавший заказ')
-        stm.setHeaderData(10, QtCore.Qt.Horizontal, 'Активный')
-        stm.setHeaderData(11, QtCore.Qt.Horizontal, 'Класс обслуживаия')
+        stm.setHeaderData(6, QtCore.Qt.Horizontal, 'Сумма предоплаты')
+        stm.setHeaderData(7, QtCore.Qt.Horizontal, 'Дата завершения заказа')
+        stm.setHeaderData(8, QtCore.Qt.Horizontal, 'Сотрудник, создавший заказ')
+        stm.setHeaderData(9, QtCore.Qt.Horizontal, 'Активный')
+        stm.setHeaderData(10, QtCore.Qt.Horizontal, 'Класс обслуживаия')
 
 
 if __name__ == '__main__':
