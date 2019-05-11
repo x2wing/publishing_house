@@ -3,8 +3,9 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 
-from rel_forms.directory import RelDirectory
 from db import PRODUCTION
+from rel_forms.directory import RelDirectory
+
 
 class Production(RelDirectory):
     def __init__(self, parent=None):
@@ -30,6 +31,7 @@ class Production(RelDirectory):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = Production()
+    window.show()
 
     # print(QtSql.QSqlDatabase.drivers())
     sys.exit(app.exec())
