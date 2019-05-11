@@ -3,12 +3,13 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 
+from db import SHOPS
 from forms.directory import Directory
 
 
 class Shops(Directory):
     def __init__(self, parent=None):
-        super().__init__("SHOPS", 'shops', parent=parent)
+        super().__init__("SHOPS", 'shops', sa_class=SHOPS, parent=parent)
 
     @property
     def name(self):

@@ -4,11 +4,11 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 
 from rel_forms.directory import RelDirectory
-
+from db import PRODUCTION
 
 class Production(RelDirectory):
     def __init__(self, parent=None):
-        super().__init__("PRODUCTION", 'production', parent=parent)
+        super().__init__("PRODUCTION", 'production', sa_class=PRODUCTION, parent=parent)
 
     @property
     def name(self):

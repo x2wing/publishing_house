@@ -3,8 +3,8 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 
-from forms.directory import Directory
 from db import BOOK
+from forms.directory import Directory
 
 
 class Book(Directory):

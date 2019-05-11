@@ -4,6 +4,7 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import QWidget
+from sqlalchemy import Table
 
 from db import BOOK
 
@@ -11,11 +12,13 @@ from db import BOOK
 class ComboBox(QtWidgets.QComboBox):
     def __init__(self, parent):
         super().__init__(parent)
-        print('ComboBox',parent.sa_class.__table__.columns.keys())
-        self.addItems(parent.sa_class.__table__.columns.keys())
+        print(parent, repr(parent), type(parent))
+        print('ComboBox', parent.get_cols())  # parent.sa_class.columns.keys()
+        self.addItems(parent.get_cols())
+
 
 class Directory(QWidget):
-    def __init__(self, window_title, db_table, sa_class,parent=None, sort_column=0, hide_column=0,  ):
+    def __init__(self, window_title, db_table, sa_class, parent=None, sort_column=0, hide_column=0, ):
         super().__init__(parent)
         self.hide_column = hide_column
         self.sa_class = sa_class
@@ -48,7 +51,7 @@ class Directory(QWidget):
         return stm
 
     def del_model(self):
-        self.tv.setModel(QStandardItemModel(1,1))
+        self.tv.setModel(QStandardItemModel(1, 1))
 
     def set_model(self):
         self.tv.setModel(self.stm)
@@ -59,14 +62,13 @@ class Directory(QWidget):
         vbox = QtWidgets.QVBoxLayout()
         hbox = QtWidgets.QHBoxLayout()
 
-        self.column= ComboBox(self)
-        self.condition= QtWidgets.QComboBox(self)
-        self.condition.addItems(['>','<','=',])
+        self.column = ComboBox(self)
+        self.condition = QtWidgets.QComboBox(self)
+        self.condition.addItems(['>', '<', '=', ])
         self.value = QtWidgets.QLineEdit(self)
 
-        btnFilter =QtWidgets.QPushButton('Фильтровать', self)
+        btnFilter = QtWidgets.QPushButton('Фильтровать', self)
         btnFilter.clicked.connect(self.setFilter)
-
 
         # self.tv.setModel(self.stm)
         self.tv.hideColumn(hide_column)
@@ -102,7 +104,7 @@ class Directory(QWidget):
         condition = self.condition.currentText()
         value = self.value.text()
         print(column, condition, value)
-        self.stm.setFilter(f'{column}{condition}{value}')
+        self.stm.setFilter(f"{column}{condition}'{value}'")
         self.stm.select()
 
     def addRecord(self):
@@ -112,13 +114,9 @@ class Directory(QWidget):
         self.stm.removeRow(self.tv.currentIndex().row())
         self.stm.select()
 
-
-
     def saveRecord(self):
         result = self.stm.submitAll()
         print(f'результат сохранения {result}')
-
-
 
     def connect(self):
         con = QtSql.QSqlDatabase.addDatabase("QPSQL")
@@ -134,7 +132,12 @@ class Directory(QWidget):
             raise Exception("Error opening database: {0}".format(con.lastError().text()))
         return con
 
-
+    def get_cols(self):
+        if issubclass(self.sa_class.__class__, Table):
+            result = self.sa_class.columns.keys()
+        else:
+            result = self.sa_class.__table__.columns.keys()
+        return result
 
 
 if __name__ == '__main__':

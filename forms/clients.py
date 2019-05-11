@@ -3,12 +3,13 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 
+from db import CLIENTS
 from forms.directory import Directory
 
 
 class Clients(Directory):
     def __init__(self, parent=None):
-        super().__init__("CLIENTS", 'clients', parent=parent)
+        super().__init__("CLIENTS", 'clients', sa_class=CLIENTS, parent=parent)
 
     @property
     def name(self):

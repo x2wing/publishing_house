@@ -3,12 +3,13 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 
+from db import SALARY
 from rel_forms.directory import RelDirectory
 
 
 class Salary(RelDirectory):
     def __init__(self, parent=None):
-        super().__init__("SALARY", 'salary', parent=parent, hide_column=0)
+        super().__init__("SALARY", 'salary', parent=parent, sa_class=SALARY, hide_column=0)
 
     @property
     def name(self):

@@ -1,25 +1,19 @@
 import sys
 
-from PyQt5.QtWidgets import QInputDialog
 from PyQt5 import QtCore, QtWidgets, QtSql
-from abc import ABC, abstractmethod
 
 from forms.directory import Directory
-from db import CLASS, BOOK, CLIENTS, SHOPS, PROVIDER, WORKER_INFO, SALARY, ORDER_OF_BOOKS, SUPPLY, db
 
 
 class RelDirectory(Directory):
 
-    def __init__(self, window_title, db_table, parent=None, sort_column=0, hide_column=-1,):
-        super().__init__(window_title, db_table, parent, sort_column, hide_column)
+    def __init__(self, window_title, db_table, sa_class, parent=None, sort_column=0, hide_column=-1, ):
+        super().__init__(window_title, db_table, sa_class, parent, sort_column, hide_column)
         # self.fk_column = fk_column
-
 
     # def create_ui(self, hide_column):
     #     Directory.create_ui(self, hide_column)
     #     # self.tv.doubleClicked.connect(self.fill_cell)
-
-
 
     def create_model(self, db_table, sort_column):
         # stm = QtSql.QSqlTableModel()
@@ -42,7 +36,6 @@ class RelDirectory(Directory):
         #     # 1 параметр столбец куда вешается делегат
         #     stm.setRelation(item['col'], item['qt_rel'])
         #     self.tv.setItemDelegateForColumn(item['col'], QtSql.QSqlRelationalDelegate(self.tv))
-
 
     # def fill_cell(self, model_index):
     #     if model_index.column() == self.fk_column:

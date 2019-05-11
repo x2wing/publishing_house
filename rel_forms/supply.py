@@ -3,12 +3,13 @@ import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets, QtSql
 
+from db import SUPPLY
 from rel_forms.directory import RelDirectory
 
 
 class Supply(RelDirectory):
     def __init__(self, parent=None):
-        super().__init__("SUPPLY", 'supply', parent=parent, hide_column=0)
+        super().__init__("SUPPLY", 'supply', parent=parent, sa_class=SUPPLY, hide_column=0)
 
     @property
     def name(self):
