@@ -119,7 +119,7 @@ class Directory(QWidget):
         print(f'результат сохранения {result}')
 
     def connect(self):
-        con = QtSql.QSqlDatabase.addDatabase("QPSQL")
+        con = QtSql.QSqlDatabase.addDatabase(conf.qtdriver)
         print(QtSql.QSqlDatabase.drivers())
         con.setHostName(conf.hostname)
         con.setPort(int(conf.port))
