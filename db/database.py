@@ -126,28 +126,23 @@ class ORDER_OF_BOOKS(db.Base):
 
 
 if __name__ == '__main__':
+    # def csv_dict_reader(file_obj):
+    #     """
+    #     Read a CSV file using csv.DictReader
+    #     """
+    #     reader = csv.DictReader(file_obj, delimiter=';')
+    #     for line in reader:
+    #         new_element = BOOK(line['Авторы'], line['Название'], randint(180, 379), randint(1, 3), randint(340, 5000))
+    #         db.session.add(new_element)
+    #
+    #     db.session.commit()
+    #
+    #
+    # with open("data.csv") as f_obj:
+    #     csv_dict_reader(f_obj)
+    #
+    # # for i in db.session.query(CLASS.class_name):
+    # #     print(i[0])
+    # #     # print({i.class_id:i.class_name})
 
-    import csv
-    from random import randint
-
-
-    def csv_dict_reader(file_obj):
-        """
-        Read a CSV file using csv.DictReader
-        """
-        reader = csv.DictReader(file_obj, delimiter=';')
-        for line in reader:
-            new_element = BOOK(line['Авторы'], line['Название'], randint(180, 379), randint(1, 3), randint(340, 5000))
-            db.session.add(new_element)
-
-        db.session.commit()
-
-
-    with open("data.csv") as f_obj:
-        csv_dict_reader(f_obj)
-
-    # for i in db.session.query(CLASS.class_name):
-    #     print(i[0])
-    #     # print({i.class_id:i.class_name})
-
-    # db.make_schema()
+    db.make_schema()
