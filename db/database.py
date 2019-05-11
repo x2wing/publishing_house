@@ -1,6 +1,7 @@
-from db.base_engine import DB
 from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP, Boolean, Table
 from sqlalchemy.orm import relationship, backref
+
+from db.base_engine import DB
 
 db = DB()
 
@@ -62,7 +63,7 @@ class SALARY(db.Base):
     worker_prepaid_expense = Column(Integer)
 
     worker_info = relationship("WORKER_INFO",
-                               backref=backref("salary", uselist=False),)
+                               backref=backref("salary", uselist=False), )
 
 
 class SUPPLY(db.Base):
@@ -75,12 +76,13 @@ class SUPPLY(db.Base):
                             backref="supply", )
 
 
-association_table = Table('production', db.Base.metadata,
-                          Column('book_identifier', Integer,
-                                 ForeignKey('book.book_identifier', onupdate="CASCADE", ondelete="CASCADE")),
-                          Column('order_id', Integer,
-                                 ForeignKey('order_of_books.order_id', onupdate="CASCADE", ondelete="CASCADE"))
-                          )
+PRODUCTION = Table(
+    'production', db.Base.metadata,
+    Column('book_identifier', Integer,
+           ForeignKey('book.book_identifier', onupdate="CASCADE", ondelete="CASCADE")),
+    Column('order_id', Integer,
+           ForeignKey('order_of_books.order_id', onupdate="CASCADE", ondelete="CASCADE")),
+)
 
 
 class BOOK(db.Base):
@@ -94,7 +96,14 @@ class BOOK(db.Base):
     price_of_book = Column(Integer)
 
     order_of_books = relationship("ORDER_OF_BOOKS",
-                                  secondary=association_table, )
+                                  secondary=PRODUCTION, )
+
+    def __init__(self, name_of_book, author_of_book, quantity_of_pages, quantity_of_copyes, price_of_book):
+        self.name_of_book = name_of_book
+        self.author_of_book = author_of_book
+        self.quantity_of_pages = quantity_of_pages
+        self.quantity_of_copyes = quantity_of_copyes
+        self.price_of_book = price_of_book
 
 
 class ORDER_OF_BOOKS(db.Base):
@@ -113,12 +122,32 @@ class ORDER_OF_BOOKS(db.Base):
     class_id = Column(Integer, ForeignKey('class.class_id', onupdate="CASCADE", ondelete="CASCADE"))
 
     book = relationship("BOOK",
-                        secondary=association_table, )
+                        secondary=PRODUCTION, )
 
 
 if __name__ == '__main__':
+
+    import csv
+    from random import randint
+
+
+    def csv_dict_reader(file_obj):
+        """
+        Read a CSV file using csv.DictReader
+        """
+        reader = csv.DictReader(file_obj, delimiter=';')
+        for line in reader:
+            new_element = BOOK(line['Авторы'], line['Название'], randint(180, 379), randint(1, 3), randint(340, 5000))
+            db.session.add(new_element)
+
+        db.session.commit()
+
+
+    with open("data.csv") as f_obj:
+        csv_dict_reader(f_obj)
+
     # for i in db.session.query(CLASS.class_name):
     #     print(i[0])
     #     # print({i.class_id:i.class_name})
 
-    db.make_schema()
+    # db.make_schema()
