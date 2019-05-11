@@ -92,7 +92,7 @@ class Production_act(Action):
 class Salary_act(Action):
     def __init__(self, parent, tabs):
         super().__init__('&Зарплата', parent, tabs)
-        self.set_params(shortcut='Ctrl+R', cls=Salary)
+        self.set_params(shortcut='Ctrl+E', cls=Salary)
 
 
 class Supply_act(Action):
