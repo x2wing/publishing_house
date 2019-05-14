@@ -112,6 +112,7 @@ class Directory(QWidget):
 
     def delRecord(self):
         self.stm.removeRow(self.tv.currentIndex().row())
+        self.stm.submitAll()
         self.stm.select()
 
     def saveRecord(self):
