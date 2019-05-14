@@ -22,6 +22,7 @@ class Directory(QWidget):
         super().__init__(parent)
         self.hide_column = hide_column
         self.sa_class = sa_class
+        self.db_table = db_table
 
         self.setWindowTitle(window_title)
         # нужно сначала создать виджет чтобы подцепилась модель
@@ -64,7 +65,7 @@ class Directory(QWidget):
 
         self.column = ComboBox(self)
         self.condition = QtWidgets.QComboBox(self)
-        self.condition.addItems(['>', '<', '=', ])
+        self.condition.addItems(['>', '<', '=', 'ILIKE'])
         self.value = QtWidgets.QLineEdit(self)
 
         btnFilter = QtWidgets.QPushButton('Фильтровать', self)
@@ -104,7 +105,7 @@ class Directory(QWidget):
         condition = self.condition.currentText()
         value = self.value.text()
         print(column, condition, value)
-        self.stm.setFilter(f"{column}{condition}'{value}'")
+        self.stm.setFilter(f"{self.db_table}.{column}{condition}'{value}'")
         self.stm.select()
 
     def addRecord(self):
