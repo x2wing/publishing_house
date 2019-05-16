@@ -44,7 +44,7 @@ class Example(QMainWindow):
 
         # self.showFullScreen()
 
-        self.setWindowTitle('База данных книготорговой организация')
+        self.setWindowTitle('База данных "Книготорговая организация"')
 
         self.showMaximized()
         # self.show()
