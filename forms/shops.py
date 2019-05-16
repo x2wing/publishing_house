@@ -17,7 +17,7 @@ class Shops(Directory):
 
     def set_headers(self, stm):
         stm.setHeaderData(1, QtCore.Qt.Horizontal, 'Название магазина')
-        stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Адресс')
+        stm.setHeaderData(2, QtCore.Qt.Horizontal, 'Адрес')
 
 
 if __name__ == '__main__':

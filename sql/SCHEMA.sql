@@ -21,7 +21,7 @@ CREATE TABLE CLIENTS(
 CREATE TABLE  SHOPS(
     SHOP_ID bigserial PRIMARY KEY,
     SHOP_NAME text, -- название магазина
-    SHOP_ADDRESS text); -- адресс магазина
+    SHOP_ADDRESS text); -- адрес магазина
     
 CREATE TABLE PROVIDER(
     PROVIDER_ID bigserial PRIMARY KEY,
